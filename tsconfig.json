@@ -1,0 +1,14 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "commonJS",
+    "outDir": "lib",
+    "target": "es2020",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "src"
+  ]
+}
