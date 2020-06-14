@@ -6,6 +6,9 @@
   "bin": {
     "acnh-images": "lib/index.js"
   },
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
     "build:src": "./node_modules/typescript/bin/tsc",
     "publish:patch": "npm run build:src && ./node_modules/standard-version/bin/cli.js --release-as patch && npm run publish",
