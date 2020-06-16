@@ -1,22 +1,24 @@
 import { omit } from './omit';
 
 /**
- * When an item has variations, the item has an array containing information
- * about each variation. The base object has information that is static from
- * each variation and doesn't change, so an object is initialized, which holds
- * information about the base and each variation.
+ * When an item has variations, the item has the property 'variations'. which is
+ * an array of objects containing information of each variation. The keys of the
+ * item, minus 'variations', represents the base information of the item, which
+ * is static and doesn't change for each variation. So an object is initialized
+ * that holds the information of the base item and variation, for each variation
+ * and is returned in an array.
  * @param  item The item to get variations from.
  * @return      An array containing the information of the base item and
  *              variation, for each variation.
  */
 export function variants(item: obj): obj[] {
-  // Get the base information of the item, which the information of the item
+  // Get the base information of the item, which is the information of the item
   // that is static and doesn't change for each variation.
   const base: obj = omit(item, ['variations']);
 
   const variations: obj[] = [];
 
-  // For every iteration, append an object combining it and the base.
+  // For each variation, append an object combining it and the base information.
   for (const variation of item.variations) {
     variations.push({ ...base, ...variation });
   }
