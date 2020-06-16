@@ -1,38 +1,67 @@
-import { join } from 'path';
+import downloadUrl from 'download';
+import { backOff } from 'exponential-backoff';
 import ora from 'ora';
+import { basename, dirname } from 'path';
 
-import { proper } from './proper';
-import { request } from './request';
-import { urls } from './urls';
+import { convert } from './convert';
+import { png } from './png';
 
 /**
- * Downloads images from the given item.
- * @param dir     The base directory to save images to.
- * @param item    The item to download images from.
- * @param spinner The Ora instance.
+ * Represents the maximum amount of attempts to retry downloading an image when
+ * an error occurs.
  */
-export async function download(dir: string, item: obj, spinner: ora.Ora): Promise<void> {
-  // Get a list of keys from the item that are URLs.
-  const keys: string[] = urls(item);
+const maxAttempts: number = 5;
 
-  // Represents the root directory that images from the item will be saved to,
-  // all images are saved into a sub-directory that represents the spreadsheet
-  // that the item had originated from.
-  const root: string = join(dir, item.sourceSheet);
+/**
+ * This function is called when an error occurs when trying to download an
+ * image. If the given attempt number is the maximum allowed attempt, an error
+ * is thrown and the program ends.
+ * @param  error   The error that was thrown.
+ * @param  attempt The attempt number that resulted in an error.
+ * @param  spinner The Ora instance.
+ * @return         Determines if the program should try to continue downloading.
+ */
+function handler(error: any, attempt: number, spinner: ora.Ora): boolean {
+  spinner.fail('error\n');
 
-  for (const key of keys) {
-    spinner.start(`downloading: [${item.sourceSheet}] ${item.name}`);
-
-    // Determine the sub-directory that images from the item will be saved to,
-    // as some items have variations, we must save variations to separate
-    // directories to prevent overriding other variations. If the item has no
-    // variations, it's saved into a sub-directory representing the item's name.
-    const sub: string = item.variation ? join(item.name, item.variation.toString()) : item.name;
-
-    // Download the image into the directory. We initialize a new URL instance
-    // for the URL as some items have unescaped characters in their name, an
-    // example being the villager Renée. When initializing a new URL, it
-    // automatically escapes any special characters from the input.
-    await request(new URL(item[key]).href, join(root, sub), `${proper(key)}.png`, spinner);
+  // Throw an error if the attempt amount is the maximum allowed .
+  if (attempt === maxAttempts) {
+    throw new Error(`An error occurred ${maxAttempts} times\n${error}`);
   }
+
+  // Inform the user of the error and the next attempt number.
+  console.warn(`An error occurred while downloading\n${error}\n\nRetrying attempt #${attempt + 1} in 3 seconds...\n`);
+
+  return true;
+}
+
+/**
+ * Downloads the given key from the item, as the given format. A backoff system
+ * is used for downloading images, when trying to download an image and an error
+ * occurs, the program tries to download that image again, up to the maximum
+ * allowed amount of attempts. When that amount is met and an error still
+ * occurs, an error is thrown.
+ * @param  item    The item to download the image from.
+ * @param  key     The image to download.
+ * @param  format  The format representing how to download the image as.
+ * @param  spinner The Ora instance.
+ */
+export async function download(item: obj, key: string, format: string, spinner: ora.Ora): Promise<void> {
+  // We initialize a new URL instance for the link as some items have unescped
+  // characters in their name, an example being the villager Renée. When
+  // initializing a new URL, it escapes any special characters from the input.
+  const link: string = new URL(item[key]).href;
+
+  // Get the path for the item's location, replacing any special keys with the
+  // values they represent, along with making sure it ends with '.png'.
+  const path: string = png(convert(item, key, format));
+
+  spinner.start(`downloading: [${item.sourceSheet}] ${item.name} as ${path}`);
+
+  await backOff(() => downloadUrl(link, dirname(path), { filename: basename(path) }), {
+    timeMultiple: 1,
+    numOfAttempts: maxAttempts,
+    startingDelay: 3000,
+    retry: (error: any, attempt: number) => handler(error, attempt, spinner),
+  });
 }
