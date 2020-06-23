@@ -8,6 +8,7 @@ To execute this module, you can install it globally:
 
 ```
 npm install -g acnh-images
+acnh-images
 ```
 
 or, you can use `npx`:
