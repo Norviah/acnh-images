@@ -25,9 +25,9 @@ program.option(
 program.parse(process.argv);
 
 // If a user wants to pass in a space for the format, they'll have to pass in a
-// string, but, if they pass a string and use a tilde to represent the home
-// directory, it wouldn't get expanded as it's a string. So, we replace it with
-// the user's home directory only if the tilde is the first character.
-const format: string = program.format.replace(/^~/, homedir());
+// string, but, if they use the tilde shortcut to represent the home directory,
+// it won't be resolved as it's a string. So, if the user is using the tilde
+// shortcut, we'll replace it with the user's home directory.
+const format: string = program.format.replace(/^~\//, homedir());
 
 main(format);
