@@ -32,8 +32,8 @@ When manually setting the format, be sure that each image will be saved to a uni
 ### Examples
 
 ```bash
-# This format download every image in the desktop, under the sub-directory representing each item's Unique Entry ID.
-npx acnh-items -f "~/Desktop/%s/%uid/%f.png"
+# This format downloads every image in the desktop, under the sub-directory representing each item's Unique Entry ID.
+acnh-items -f "~/Desktop/%s/%uid/%f.png"
 
 # An example of this format being:
 # · Desktop
