@@ -1,10 +1,6 @@
 import { proper } from './proper';
 
 /**
- * Contains special characters and the value it represents.
- */
-
-/**
  * This container will hold references to special terms and the list of keys
  * keys from the item to replace the term as. If the value is a tuple, the first
  * element represents the key to return from the item, or, if that key doesn't
