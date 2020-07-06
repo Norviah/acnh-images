@@ -1,6 +1,6 @@
 {
   "name": "acnh-images",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Downloads every image from the Animal Crossing: New Horizons spreadsheet locally.",
   "bin": {
     "acnh-images": "lib/index.js"
