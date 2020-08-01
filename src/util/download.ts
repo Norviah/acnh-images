@@ -14,6 +14,15 @@ import { png } from './png';
 const maxAttempts: number = 5;
 
 /**
+ * Options for the backoff system.
+ */
+const options = {
+  timeMultiple: 1,
+  numOfAttempts: maxAttempts,
+  startingDelay: 3000,
+};
+
+/**
  * This function is called when an error occurs when trying to download an
  * image. If the given attempt number is the maximum allowed attempt, an error
  * is thrown and the program ends.
@@ -68,9 +77,9 @@ export async function download(item: obj, key: string, format: string, spinner: 
   spinner.start(`downloading: [${item.sourceSheet}] ${item.name} as ${path}`);
 
   await backOff(() => downloadUrl(link, dirname(path), { filename: basename(path) }), {
-    timeMultiple: 1,
-    numOfAttempts: maxAttempts,
-    startingDelay: 3000,
+    ...options,
     retry: (error: any, attempt: number) => handler(error, attempt, spinner),
-  });
+  }).catch(() =>
+    console.log(`Skipped attempting to download ${item.name} from ${link}, as an error occurred 5 times.`)
+  );
 }
