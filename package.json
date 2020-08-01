@@ -15,7 +15,7 @@
     "publish:major": "npm run build:src && ./node_modules/standard-version/bin/cli.js --release-as major && npm run publish",
     "publish:version": "npm run build:src && ./node_modules/standard-version/bin/cli.js --release-as $1 && npm run publish",
     "publish": "git push --follow-tags origin master && npm publish",
-    "run": "npm run build:src && node ."
+    "run": "npm run build:src && node ./lib/index.js"
   },
   "repository": {
     "type": "git",
