@@ -47,7 +47,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
-    "animal-crossing": "^4.3.0",
+    "animal-crossing": "latest",
     "commander": "^5.1.0",
     "download": "^8.0.0",
     "exponential-backoff": "^3.0.1",
