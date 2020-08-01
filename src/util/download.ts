@@ -1,5 +1,6 @@
 import downloadUrl from 'download';
 import { backOff } from 'exponential-backoff';
+import { existsSync } from 'fs';
 import ora from 'ora';
 import { basename, dirname } from 'path';
 
@@ -55,6 +56,14 @@ export async function download(item: obj, key: string, format: string, spinner: 
   // Get the path for the item's location, replacing any special keys with the
   // values they represent, along with making sure it ends with '.png'.
   const path: string = png(convert(item, key, format));
+
+  // Downloading every image takes a good amount of time, and usually, people
+  // will call this program whenever a new update happens, so we check if the
+  // path already exists. We check if the path doesn't exist before downloading
+  // the image as we don't need to redownload an image that already exists.
+  if (existsSync(path)) {
+    return;
+  }
 
   spinner.start(`downloading: [${item.sourceSheet}] ${item.name} as ${path}`);
 
