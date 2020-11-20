@@ -10,10 +10,11 @@
   ],
   "scripts": {
     "build:src": "./node_modules/typescript/bin/tsc",
-    "publish:patch": "npm run build:src && ./node_modules/standard-version/bin/cli.js --release-as patch && npm run publish",
-    "publish:minor": "npm run build:src && ./node_modules/standard-version/bin/cli.js --release-as minor && npm run publish",
-    "publish:major": "npm run build:src && ./node_modules/standard-version/bin/cli.js --release-as major && npm run publish",
-    "publish:version": "npm run build:src && ./node_modules/standard-version/bin/cli.js --release-as $1 && npm run publish",
+    "update": "npm i animal-crossing@latest && git add package.json pnpm-lock.yaml && git commit -m 'chore(npm): update animal-crossing'",
+    "publish:patch": "npm run update && npm run build:src && ./node_modules/standard-version/bin/cli.js --release-as patch && npm run publish",
+    "publish:minor": "npm run update && npm run build:src && ./node_modules/standard-version/bin/cli.js --release-as minor && npm run publish",
+    "publish:major": "npm run update && npm run build:src && ./node_modules/standard-version/bin/cli.js --release-as major && npm run publish",
+    "publish:version": "npm run update && npm run build:src && ./node_modules/standard-version/bin/cli.js --release-as $1 && npm run publish",
     "publish": "git push --follow-tags origin master && npm publish",
     "run": "npm run build:src && node ./lib/index.js"
   },
@@ -47,7 +48,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
-    "animal-crossing": "latest",
+    "animal-crossing": "^6.11.0",
     "commander": "^5.1.0",
     "download": "^8.0.0",
     "exponential-backoff": "^3.0.1",
