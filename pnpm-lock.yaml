@@ -1,5 +1,5 @@
 dependencies:
-  animal-crossing: 6.13.0
+  animal-crossing: 7.3.0
   commander: 5.1.0
   download: 8.0.0
   exponential-backoff: 3.1.0
@@ -20,7 +20,7 @@ devDependencies:
   typedoc: 0.17.8_typescript@3.9.7
   typedoc-plugin-markdown: 2.4.2_typedoc@0.17.8
   typescript: 3.9.7
-lockfileVersion: 5.1
+lockfileVersion: 5.2
 packages:
   /@babel/code-frame/7.10.4:
     dependencies:
@@ -246,10 +246,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-lRF8RORchjpKG50/WFf8xmg7sgCLFiYNNnqdKflk63whMQcWR5ngGjiSXkL9bjxy6B2npOK2HSMN49jEBMSkag==
-  /animal-crossing/6.13.0:
+  /animal-crossing/7.3.0:
     dev: false
     resolution:
-      integrity: sha512-QcGY9t1Zlr8a8G5qbHJLopEumPzy0MQlF5CJ67q68mqwulUvZsrSG7U4GecK2m7wDI9URYXN71AOXnwVhynzMQ==
+      integrity: sha512-bNM2MSJlQHkybG1f3FVNAA8mLFSsJnXpc0QjkV9TANLxWaxVIktQIKhsRS5e2GZnIOpmzakoLjdR8V20LkWbiQ==
   /ansi-colors/4.1.1:
     dev: true
     engines:
@@ -3258,7 +3258,7 @@ specifiers:
   '@types/ws': ^7.2.5
   '@typescript-eslint/eslint-plugin': ^3.2.0
   '@typescript-eslint/parser': ^3.2.0
-  animal-crossing: ^6.13.0
+  animal-crossing: ^7.3.0
   commander: ^5.1.0
   download: ^8.0.0
   eslint: ^7.2.0
